@@ -1,0 +1,14 @@
+###
+
+GET http://localhost:8080/shopping-items
+
+###
+POST http://localhost:8080/shopping-items
+Content-Type: application/json
+
+{
+  "name": "apple",
+}
+
+###
+DELETE http://localhost:8080/shopping-items/uuid
