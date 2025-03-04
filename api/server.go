@@ -3,55 +3,21 @@ package api
 import (
 	"encoding/json"
 	"net/http"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/mux"
+	goshoppingstore "github.com/jonnny013/go-practice"
 )
-
-type Item struct {
-	Id          uuid.UUID `json:"id" db:"id"`
-	Name        string    `json:"name" db:"name"`
-	Description string    `json:"description" db:"description"`
-	CreatedAt   time.Time `json:"created_at" db:"created_at"`
-	UpdatedAt   time.Time `json:"updated_at" db:"updated_at"`
-}
-
-type Comment struct {
-	Id        uuid.UUID `json:"id" db:"id"`
-	Item_Id   uuid.UUID `json:"item_id" db:"item_id"`
-	Title     string    `json:"title" db:"title"`
-	Body      string    `json:"body" db:"body"`
-	Likes     int       `json:"likes" db:"likes"`
-	CreatedAt time.Time `json:"created_at" db:"created_at"`
-	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
-}
-
-type ItemStore interface {
-	Item(id uuid.UUID) (Item, error)
-	Items() ([]Item, error)
-	CreateItem(i *Item) error
-	UpdateItem(i *Item) error
-	DeleteItem(id uuid.UUID) error
-}
-
-type CommentStore interface {
-	Comment(id uuid.UUID) (Comment, error)
-	CommentsByItem(postId uuid.UUID) ([]Comment, error)
-	CreateComment(i *Comment) error
-	UpdateComment(i *Comment) error
-	DeleteComment(id uuid.UUID) error
-}
 
 type Server struct {
 	*mux.Router
-	shoppingItems []Item
+	shoppingItems []goshoppingstore.Item
 }
 
 func NewServer() *Server {
 	s := &Server{
 		Router:        mux.NewRouter(),
-		shoppingItems: []Item{},
+		shoppingItems: []goshoppingstore.Item{},
 	}
 	s.Router.StrictSlash(true)
 	s.routes()
@@ -66,7 +32,7 @@ func (s *Server) routes() {
 
 func (s *Server) createShoppingItem() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var i Item
+		var i goshoppingstore.Item
 		if err := json.NewDecoder(r.Body).Decode(&i); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
