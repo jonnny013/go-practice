@@ -34,7 +34,7 @@ func (s *ItemStore) Items() ([]goshoppingstore.Item, error) {
 }
 
 func (s *ItemStore) CreateItem(t *goshoppingstore.Item) error {
-	if err := s.Get(t, `INSERT INTO items VALUES ($1, $2, $3) RETURNING *`, t.Id, t.Name, t.Description); err != nil {
+	if err := s.Get(t, `INSERT INTO items (id, name, description) VALUES ($1, $2, $3) RETURNING *`, t.Id, t.Name, t.Description); err != nil {
 		return fmt.Errorf("error creating item %w", err)
 	}
 	return nil
@@ -46,8 +46,8 @@ func (s *ItemStore) UpdateItem(t *goshoppingstore.Item) error {
 	}
 	return nil
 }
-func (s *ItemStore) DeleteItem(t *goshoppingstore.Item) error {
-	if _, err := s.Exec(`DELETE FROM items WHERE id = $1 RETURNING *`, t.Id); err != nil {
+func (s *ItemStore) DeleteItem(id uuid.UUID) error {
+	if _, err := s.Exec(`DELETE FROM items WHERE id = $1 RETURNING *`, id); err != nil {
 		return fmt.Errorf("error updating item %w", err)
 	}
 	return nil
