@@ -7,11 +7,7 @@ import (
 	goshoppingstore "github.com/jonnny013/go-practice"
 )
 
-func NewItemStore(db *sqlx.DB) *ItemStore {
-	return &ItemStore{
-		DB: db,
-	}
-}
+
 
 type ItemStore struct {
 	*sqlx.DB

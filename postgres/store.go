@@ -2,8 +2,8 @@ package postgres
 
 import (
 	"fmt"
+
 	"github.com/jmoiron/sqlx"
-	goshoppingstore "github.com/jonnny013/go-practice"
 	_ "github.com/lib/pq"
 )
 
@@ -17,12 +17,16 @@ func NewStore(dataSourceName string) (*Store, error) {
 	}
 
 	return &Store{
-		ItemStore:    NewItemStore(db),
-		CommentStore: NewCommentStore(db),
+		ItemStore: &ItemStore{
+			DB: db,
+		},
+		CommentStore: &CommentStore{
+			DB: db,
+		},
 	}, nil
 }
 
 type Store struct {
-	goshoppingstore.ItemStore
-	goshoppingstore.CommentStore
+	*ItemStore
+	*CommentStore
 }
