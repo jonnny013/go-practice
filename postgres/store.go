@@ -2,9 +2,9 @@ package postgres
 
 import (
 	"fmt"
-
 	"github.com/jmoiron/sqlx"
 	goshoppingstore "github.com/jonnny013/go-practice"
+	_ "github.com/lib/pq"
 )
 
 func NewStore(dataSourceName string) (*Store, error) {
