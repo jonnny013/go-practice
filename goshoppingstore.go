@@ -1,11 +1,9 @@
 package goshoppingstore
 
 import (
-	"net/http"
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/jonnny013/go-practice/api"
 )
 
 type Item struct {
@@ -42,7 +40,7 @@ type CommentStore interface {
 	DeleteComment(id uuid.UUID) error
 }
 
-func main() {
-	srv := api.NewServer()
-	http.ListenAndServe(":8080", srv)
+type Store interface {
+	CommentStore
+	ItemStore
 }
